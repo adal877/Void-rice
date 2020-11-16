@@ -1,4 +1,3 @@
-"set t_Co=256
 " nnoremap <silent> <Leader>v :NERDTreeFind<CR>
 set nocompatible
 nmap <C-x> <esc>:NERDTreeToggle<CR>
@@ -6,7 +5,33 @@ nmap <F7> :TagbarToggle<CR>
 set cursorcolumn
 set cursorline
 filetype plugin on
-syntax enable 
+syntax on
+set hlsearch
+"copen
+" ==============================================
+" A simple load bar
+" ==============================================
+fu! Load()
+for i in range(10)
+  echo "━"
+endfor
+endfu
+" ==============================================
+" Map the cv keys to split the screen vertically
+" ==============================================
+let mapleader=","
+nnoremap <leader>cv :vsplit %<cr>
+nnoremap <leader>ch :split %<cr>
+" ==============================================
+" Make the vim check the filetype and autmatic 
+" put a header on it
+" ==============================================
+augroup Templates
+  autocmd!
+  autocmd BufNewFile *.c 0r /home/ma7ry/.vim/templates/base.c
+  autocmd BufNewFile *.rs 0r /home/ma7ry/.vim/templates/base.rs
+  autocmd BufNewFile *.sh 0r /home/ma7ry/.vim/templates/base.sh
+augroup END
 "===============================================
 "Mundo tree undo visualizer
 "===============================================
@@ -50,10 +75,19 @@ let g:deoplete#enable_at_startup = 1
 map <C-A> <esc>:w <cr> :! clear && cargo run %<cr>
 let g:indentLine_setColors = 1
 "let g:indentLine_char = '|'
+" ===============================================
+" simple function to show a banner on vim startup
+" ===============================================
+fu! Say(msg)
+  set noruler noshowcmd
+  echo a:msg
+endfu
+set ruler showcmd
+call Say("██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗\n██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝\n██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗\n██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝\n╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗\n╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝\n\nOpenning the file...\n\n\n")
 "================================================
 " command to compiling and debugg C and C++ code
 "================================================
-map <C-h> <esc>:w <cr> :! clear && gcc % && ./a.out && x86_64-w64-mingw32-gcc %<cr>
+map <C-h> <esc>:w <cr> :! clear && gcc % -o % && ./a.out && x86_64-w64-mingw32-gcc %<cr>
 " ===============================================
 setlocal sm
 set shiftwidth=4
@@ -117,6 +151,10 @@ endif
 endfunction
 map <F12> <esc>:call Uncomment()<cr>
 " =================================================
+" create an alias to c lang for always that its gonna createa main.c file
+" the vim automatically make the traditional header of it
+" =================================================
+" =================================================
 " dont difference the lower/upper case when save and quit 
 " =================================================
 cab W <esc>:w
@@ -128,7 +166,7 @@ cab Q  <esc>:q
 " General Config 
 " =================================================
 "
-"==================================================
+" =================================================
 " turn on/off the numeration of lines 
 " =================================================
 "map <F9> <esc>:set nu!<cr>
